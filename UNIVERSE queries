@@ -1,6 +1,6 @@
 DataStage Engine UNIVERSE queries
 UNIVERSE has been used as DataStage repository since the beginning. HAWK release (v8.0) introduces new Repository layer where jobs are
-stored in RDBMS (DB2,Oracle,MS SqlServer). UNIVERSE stil in use in V11.7!
+stored in RDBMS (DB2,Oracle,MS SqlServer). UNIVERSE stilL in use in V11.7!
 
 Some useful queries
 
