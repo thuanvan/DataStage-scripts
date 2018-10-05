@@ -40,3 +40,23 @@ In this example, a job type of 3 is a parallel job. Valid job types value are:
 2 = Sequence
 3 = Parallel
 
+Finding a Input Dataset used in jobs
+SELECT 
+   DISTINCT DS_JOBS.NAME AS JOB_NAME FMT '100L', 
+   DS_JOBS.CATEGORY FMT '100L', 
+   DS_JOBOBJECTS.NAME AS OBJECT_NAME FMT '100L', 
+   DS_JOBOBJECTS.OLETYPE FMT '100L', 
+   EVAL DS_JOBOBJECTS."if index(@RECORD,'FIND ME',1) > 0 then 'FOUND' else ''" AS FOUND FMT '5L' 
+FROM 
+   DS_JOBS, 
+   DS_JOBOBJECTS 
+WHERE 
+   DS_JOBS.JOBNO = DS_JOBOBJECTS.OBJIDNO 
+   and FOUND = 'FOUND' 
+GROUP BY 
+   JOB_NAME, 
+   DS_JOBS.CATEGORY, 
+   OBJECT_NAME, 
+   DS_JOBOBJECTS.OLETYPE, 
+   FOUND 
+; 
