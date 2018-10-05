@@ -7,6 +7,7 @@ Some useful queries
 1. From the DataStage Administrator client select a project, click the command button and then execute the command:
 
 LIST DS_JOBS JobName
+LIST DS_JOBS JOBNO WITH NAME = "your job name"
 
 where JobName is the name of the job you want to obtain the job number. 
 This job number will be displayed in in the line that starts with "No....".
