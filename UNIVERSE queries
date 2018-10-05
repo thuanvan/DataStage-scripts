@@ -18,3 +18,24 @@ where X is the job number.
 
 2. From Director Client, open the log view of the job and double click on any entry of the log. 
 The job number will be listed under the field "Job Number:"
+
+How do you generate a list of parallel DataStage jobs that use a particular parameter environment variable?
+Open the DataStage Administrator Client
+
+Click on the Projects tab and select the project you would like to generate a list for.
+Click the Command Button
+In the command entry box type:
+LIST DS_JOBS WITH JOBTYPE = 3 AND EVAL "TRANS('DS_JOBOBJECTS','J\':@RECORD<5>:'\ROOT',14,'X')" LIKE ...<VARNAME>...
+
+<VARNAME> should be the name of the parameter or environment variable
+Example:
+LIST DS_JOBS WITH JOBTYPE = 3 AND EVAL "TRANS('DS_JOBOBJECTS','J\':@RECORD<5>:'\ROOT',14,'X')" LIKE ...TMPDIR...
+Click Execute
+If the output is on more than one page, click Next to page done and click Close when finished.
+
+In this example, a job type of 3 is a parallel job. Valid job types value are:
+0 = Server
+1 = Mainframe
+2 = Sequence
+3 = Parallel
+
