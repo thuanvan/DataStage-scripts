@@ -1,0 +1,68 @@
+Datastage Admin Commands
+
+Command Description	Command
+DS Project Object counts	
+      SELECT COUNT(*) FROM DS_JOBS;
+      SELECT COUNT(*) FROM DS_JOBOBJECTS;
+ 	 
+List all jobs in a DS project	
+      SELECT JOBNO, @ID, CATEGORY, NAME FROM DS_JOBS
+ 	 
+Clear Log From Administrator	
+      select JOBNO from DS_JOBS where NAME='Name of the job'
+      CLEAR.FILE RT_Logxx where xx is JOBNO.
+ 	 
+CLEAR HASH FILE.	
+      CLEAR.FILE <HASHED FILE NAME>
+ 	 
+Find how many Jobs are using given Hashed file as INPUT	
+      select DS_JOBS.NAME AS JOB_NAME FMT '35L' from DS_JOBOBJECTS,DS_JOBS where DS_JOBOBJECTS.OLETYPE = 'CHashedInput' 
+      and DS_JOBOBJECTS.OBJIDNO = DS_JOBS.JOBNO and EVAL DS_JOBOBJECTS."@RECORD<6>" = 'hashed file name' group by JOB_NAME; 
+ 	 
+Find how many Jobs are using given Hashed file as OUTPUT	
+      select DS_JOBS.NAME AS JOB_NAME FMT '35L' from DS_JOBOBJECTS,DS_JOBS where DS_JOBOBJECTS.OLETYPE = 'CHashedOutput' 
+      and DS_JOBOBJECTS.OBJIDNO = DS_JOBS.JOBNO and EVAL DS_JOBOBJECTS."@RECORD<6>" = 'hashed file name' group by JOB_NAME; 
+ 	 
+Find how many Jobs are using given Hashed file as INPUT and OUTPUT	
+      select DS_JOBS.NAME AS JOB_NAME FMT '35L' from DS_JOBOBJECTS, DS_JOBS 
+      where DS_JOBOBJECTS.OLETYPE in ('CHashedOutput','CHashedInput') and DS_JOBOBJECTS.OBJIDNO = DS_JOBS.JOBNO 
+      and EVAL DS_JOBOBJECTS."@RECORD<6>" = 'Hashed file name' group by JOB_NAME;
+ 	 
+View column data in a hashed file	
+      SELECT COLUMN_NAME FROM HASHED_FILE_NAME
+ 	 
+List metadata of hashfile	
+      SELECT "FIELD", "FIELD.TYPE", "FIELD.DEF", "FIELD.CONV", "FIELD.HEAD", "FIELD.FMT", "FIELD.ASSOC" 
+      FROM DICT hashedfile ORDER BY "FIELD.NO", "TYPE";
+ 	 
+Insert data into the hashfile	
+      INSERT INTO HASHED_FILE_NAME (COLUMN_NAME) VALUES ('VALUE');
+ 	 
+Find which user modified the job last	
+      SELECT INSTANCE, DTM, MODIFIER FROM DS_AUDIT WHERE CLASS = '2' AND INSTANCE LIKE 'JOB NAME'; 
+ 	 
+List all the projects in DataStage.. With Owner	
+      SELECT @ID, NAME FMT '40L' FROM UV.ACCOUNT;
+ 	 
+Reset surrogate key generated using Keymgmt function in Datastage	
+      UPDATE SDKSequences USING DICT VOC SET F1 = '1' WHERE @ID = 'Your_Sequence_Name';
+ 	 
+List all the surrogate key variables used in datastage proj	
+      SELECT * FROM SDKSequences;
+ 	 
+List Datastage error message decsription, given error me	
+      SELECT * FROM SYS.MESSAGE WHERE @ID = '081002';
+ 	 
+List all jobs using a TABLE	
+      SELECT DS_JOBS.NAME AS JOB_NAME, DS_JOBS.CATEGORY, DS_JOBOBJECTS.NAME AS OBJECT_NAME, 
+      DS_JOBOBJECTS.OLETYPE, EVAL DS_JOBOBJECTS."if index(upcase(@RECORD),'TABLE_NAME',1) > 0 then 'FOUND' else ''" AS FOUND FMT '5L' 
+      FROM DS_JOBS, DS_JOBOBJECTS WHERE DS_JOBS.JOBNO = DS_JOBOBJECTS.OBJIDNO and FOUND = 'FOUND' 
+      GROUP BY JOB_NAME, DS_JOBS.CATEGORY, OBJECT_NAME, DS_JOBOBJECTS.OLETYPE, FOUND; 
+ 	 
+ 	 
+List Sequencer jobs calling a specified job in the project	  
+      @DsServe >> /opt/IBM/InformationServer/Server/DSEngine/bin/dssearch -ljobs -usedby -r -oc -oj <projectname> <jobname>
+      
+List all jobs called in specified Sequencer job	  
+      @DsServe >> /opt/IBM/InformationServer/Server/DSEngine/bin/dssearch -ljobs -uses -r -oc -oj
+      <projectname> <SeqJobname>
