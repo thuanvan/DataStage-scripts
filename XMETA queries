@@ -1,1 +1,22 @@
 
+IBM Infosphere Information Repository (XMETA) queries
+
+Finding jobs that uses particular Transformer funtion
+Transformer function can be parsed from text in last column i.e."expression_xmeta"
+
+SELECT a.dsnamespace_xmeta AS Project_Nm, 
+      a.category_xmeta     As Folder_Nm, 
+      a.name_xmeta         AS Job_Nm, 
+      b.name_xmeta         AS Stage_Nm, 
+      d.name_xmeta         AS Link_Nm, 
+      e.sourcecolumn_xmeta AS Target_Col, 
+      e.expression_xmeta   AS Transformation 
+FROM  xmeta.datastagex_dsjobdef a, 
+      xmeta.datastagex_dsstage b , 
+      xmeta.datastagex_dsoutputpin c, 
+      xmeta.datastagex_dslink d, 
+      xmeta.datastagex_dsderivation e 
+WHERE a.xmeta_repos_object_id_xmeta = b.container_rid 
+  AND c.container_rid               = b.xmeta_repos_object_id_xmeta 
+  AND c.xmeta_repos_object_id_xmeta = d.from_outputpin_xmeta 
+  AND d.xmeta_lockingroot_xmeta     = e.xmeta_lockingroot_xmeta;
