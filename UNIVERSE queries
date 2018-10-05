@@ -1,0 +1,20 @@
+DataStage Engine UNIVERSE queries
+UNIVERSE has been used as DataStage repository since the beginning. HAWK release (v8.0) introduces new Repository layer where jobs are
+stored in RDBMS (DB2,Oracle,MS SqlServer). UNIVERSE stil in use in V11.7!
+
+Some useful queries
+
+1. From the DataStage Administrator client select a project, click the command button and then execute the command:
+
+LIST DS_JOBS JobName
+
+where JobName is the name of the job you want to obtain the job number. 
+This job number will be displayed in in the line that starts with "No....".
+Note: Conversely, if you have a job number want to know what job is associated with that id you can run the command:
+
+LIST DS_JOBS WITH JOBNO=X
+
+where X is the job number.
+
+2. From Director Client, open the log view of the job and double click on any entry of the log. 
+The job number will be listed under the field "Job Number:"
