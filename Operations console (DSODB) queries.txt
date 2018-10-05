@@ -1,0 +1,11 @@
+Operations console (DSODB) queries 
+
+FIND PARAMETER USED
+
+SELECT distinct X.ProjectName, X.FOLDERPATH,  X.JobName, P.PARAMNAME, P.PARAMVALUE 
+     FROM  DSODB.JOBRUN R 
+     JOIN  DSODB.JOBEXEC X          ON R.JOBID = X.JOBID 
+     JOIN  DSODB.JOBRUNPARAMSVIEW P ON R.RUNID = P.RUNID 
+     WHERE P.PARAMNAME = <parameternm> 
+    --   AND R.RUNSTARTTIMESTAMP > (Current_timestamp - 7 days) 
+     ORDER BY 1, 2, 3
