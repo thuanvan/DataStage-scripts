@@ -21,4 +21,4 @@ jobs:
       - run: echo "Hellow world!"
       - name: List files in the repository 1
         run: |
-         ls {{ github.workspace }}
+         ls ${{ github.workspace }}
