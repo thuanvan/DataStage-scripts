@@ -5,7 +5,7 @@ on: [push]
 jobs:
   run-shell-command:
     runs-on: ubunu-latest
-    steps
+    steps:
       - name: echo a string
         run: echo "Hellow World"
       - name: multiline scripts
